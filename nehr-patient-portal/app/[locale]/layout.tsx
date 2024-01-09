@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Manrope } from "next/font/google";
 import "./globals.css";
+import { NextAuthProvider } from "@/contexts/auth-provider";
 
 const inter = Manrope({ subsets: ["latin"] });
 
@@ -17,7 +18,9 @@ export default async function RootLayout({
   return (
     <html>
       <body className={inter.className}>
-        <div className="min-h-screen">{children}</div>
+        <div className="min-h-screen">
+          <NextAuthProvider>{children}</NextAuthProvider>
+        </div>
       </body>
     </html>
   );
