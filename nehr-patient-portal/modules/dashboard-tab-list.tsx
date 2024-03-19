@@ -1,5 +1,7 @@
+"use client";
+
 import { TabsTrigger } from "@/components/ui/tabs";
-import { useTranslation } from "react-i18next";
+import { useScopedI18n } from "@/locales/client";
 
 interface Tab {
   label: string;
@@ -8,7 +10,7 @@ interface Tab {
 }
 
 export const DashboardTabList = () => {
-  const { t } = useTranslation("dashboard");
+  const t = useScopedI18n("dashboard");
 
   const tabs: Tab[] = [
     {

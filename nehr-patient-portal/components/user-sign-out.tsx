@@ -1,5 +1,5 @@
 import { Button } from "./ui/button";
-import { FaSignOutAlt } from "react-icons/fa";
+import { LogOutIcon } from "lucide-react";
 import { signOut } from "next-auth/react";
 import {
   Tooltip,
@@ -7,19 +7,16 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
-import { useTranslation } from "react-i18next";
 
 export const UserSignOut = () => {
-  const { t } = useTranslation();
-
   return (
     <TooltipProvider>
       <Tooltip>
         <TooltipTrigger asChild>
           <Button size="icon" variant="outline" onClick={() => signOut()}>
-            <FaSignOutAlt />
+            <LogOutIcon />
             <span className="sr-only">sign out</span>
-            <TooltipContent>{t("signOut")}</TooltipContent>
+            <TooltipContent>Sign Out</TooltipContent>
           </Button>
         </TooltipTrigger>
       </Tooltip>

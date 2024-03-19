@@ -1,8 +1,8 @@
 "use client";
 
 import { cn } from "@/lib/utils";
+import { LandmarkIcon } from "lucide-react";
 import { ReactNode } from "react";
-import { LuLandmark } from "react-icons/lu";
 
 type Encounter = {
   name: string;
@@ -42,7 +42,7 @@ const Milestone = ({
           style={{
             backgroundColor: milestone.encounter.color,
           }}>
-          <LuLandmark size={16} />
+          <LandmarkIcon size={16} />
         </div>
         {!last && <div className="w-px bg-slate-200 flex-1" />}
       </div>

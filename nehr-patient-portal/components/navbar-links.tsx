@@ -1,10 +1,9 @@
 "use client";
-
 import Link from "next/link";
-import { useTranslation } from "react-i18next";
+import { useScopedI18n } from "@/locales/client";
 
 export const NavbarLinks = () => {
-  const { t } = useTranslation();
+  const t = useScopedI18n("commons");
 
   return (
     <>

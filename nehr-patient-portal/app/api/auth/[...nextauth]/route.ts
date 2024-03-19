@@ -12,7 +12,7 @@ export const authOptions: NextAuthOptions = {
       type: "oauth",
       wellKnown: `https://api.asgardeo.io/t/${process.env.ASGARDEO_ORGANIZATION_NAME}/oauth2/token/.well-known/openid-configuration`,
       authorization: {
-        params: { scope: "openid profile" },
+        params: { scope: "openid profile fhirUser launch/patient" },
       },
       idToken: true,
       checks: ["pkce", "state"],
@@ -51,7 +51,7 @@ export const authOptions: NextAuthOptions = {
       return token;
     },
   },
-  debug: true,
+  debug: false,
 };
 
 const handler = NextAuth(authOptions);

@@ -1,13 +1,12 @@
 "use client";
 
 import { OverviewCard } from "@/components/overview-card";
-import { DASHBOARD } from "@/locales/namespaces";
-import { useTranslation } from "react-i18next";
 import { MedicalHistoryTimeline } from "./medical-history-timeline";
 import { TitleSeparator } from "@/components/title-separator";
+import { useScopedI18n } from "@/locales/client";
 
 export const RecordHome = () => {
-  const { t } = useTranslation(DASHBOARD);
+  const t = useScopedI18n("dashboard");
 
   return (
     <>

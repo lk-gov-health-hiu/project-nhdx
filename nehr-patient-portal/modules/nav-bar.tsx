@@ -5,12 +5,13 @@ import { Button } from "@/components/ui/button";
 import { SheetTrigger, SheetContent, Sheet } from "@/components/ui/sheet";
 import { NavbarLinks } from "@/components/navbar-links";
 import { LanguageSelector } from "@/components/language-selector";
-import { FaBars } from "react-icons/fa";
 import { Separator } from "@/components/ui/separator";
 import { motion } from "framer-motion";
 import { useSession } from "next-auth/react";
 import { UserSignOut } from "@/components/user-sign-out";
 import { AvatarMenu } from "@/modules/avatar-menu";
+import { Suspense } from "react";
+import { MenuIcon } from "lucide-react";
 
 export const NavBar = () => {
   const { status } = useSession();
@@ -23,14 +24,16 @@ export const NavBar = () => {
         </Link>
         <div className="hidden md:flex items-center ml-auto gap-6 text-slate-500 text-base">
           <NavbarLinks />
-          <LanguageSelector />
+          <Suspense>
+            <LanguageSelector />
+          </Suspense>
           {status === "authenticated" && <AvatarMenu />}
         </div>
         <div className="flex md:hidden ml-auto">
           <Sheet>
             <SheetTrigger asChild>
               <Button size="icon" variant="outline">
-                <FaBars />
+                <MenuIcon />
                 <span className="sr-only">Toggle navigation menu</span>
               </Button>
             </SheetTrigger>
@@ -38,7 +41,9 @@ export const NavBar = () => {
               <div className="grid gap-2 py-6 text-slate-500 text-base">
                 <UserSignOut />
                 <NavbarLinks />
-                <LanguageSelector />
+                <Suspense>
+                  <LanguageSelector />
+                </Suspense>
               </div>
             </SheetContent>
           </Sheet>
