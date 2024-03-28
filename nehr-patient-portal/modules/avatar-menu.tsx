@@ -1,5 +1,12 @@
 "use client";
 
+import Link from "next/link";
+import { parseJwt } from "@/lib/utils";
+import { useQuery } from "@tanstack/react-query";
+import { useSession } from "next-auth/react";
+import { signOut } from "next-auth/react";
+import { useScopedI18n } from "@/locales/client";
+import { UsersIcon } from "lucide-react";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -12,17 +19,11 @@ import {
   DropdownMenuSubTrigger,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
-import { useQuery } from "@tanstack/react-query";
-import { useSession } from "next-auth/react";
-import { signOut } from "next-auth/react";
-import { useScopedI18n } from "@/locales/client";
-import { UsersIcon } from "lucide-react";
 
-const PATIENT_HOST =
-  "https://728bba0c-9f10-4bb1-833b-7a9ce5dbfac8-dev.e1-eu-north-azure.choreoapis.dev/mlsa/patient/lk-fhir-patient-api-803/v1.0";
+const BASE_URL = process.env.NEXT_PUBLIC_BASE_URL;
 
-const fetchPatient = async (idToken: string) => {
-  const response = await fetch(`${PATIENT_HOST}/fhir/r4/Patient`, {
+const fetchPatient = async (idToken: string, patientId: string) => {
+  const response = await fetch(`${BASE_URL}/fhir/r4/Patient/${patientId}`, {
     headers: {
       Authorization: `Bearer ${idToken}`,
     },
@@ -33,18 +34,18 @@ const fetchPatient = async (idToken: string) => {
 };
 
 export const AvatarMenu = () => {
+  const t = useScopedI18n("commons");
   const { data: auth } = useSession();
+  const patientId = parseJwt(auth?.user?.idToken)?.patientId;
   const { data, isLoading, isError } = useQuery({
-    queryKey: ["patient", auth?.user.idToken],
-    queryFn: () => fetchPatient(auth?.user.idToken!),
+    queryKey: ["patient", patientId],
+    queryFn: () => fetchPatient(auth?.user.idToken!, patientId),
   });
 
-  const user = data?.entry?.[0]?.resource;
-  const firstName = user?.name?.[0]?.given?.[0];
-  const lastName = user?.name?.[0]?.family;
+  const name = data?.name?.[0]?.text;
+  const firstName = name?.split(" ")?.[0];
+  const lastName = name?.split(" ")?.[1];
   const initials = firstName?.[0] + lastName?.[0];
-
-  const t = useScopedI18n("commons");
 
   return (
     <>
@@ -55,7 +56,9 @@ export const AvatarMenu = () => {
         <DropdownMenuContent align="end" sideOffset={12}>
           <DropdownMenuLabel>{t("myAccount")}</DropdownMenuLabel>
           <DropdownMenuSeparator />
-          <DropdownMenuItem>{t("settings")}</DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/settings?section=my-phn">{t("settings")}</Link>
+          </DropdownMenuItem>
           <DropdownMenuItem onSelect={() => signOut()}>
             {t("signOut")}
           </DropdownMenuItem>
